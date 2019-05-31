@@ -1,0 +1,20 @@
+{
+    "ui_device_info": {
+        "node": {
+            "size": "Size",
+            "name": "Name",
+            "group": "Group",
+            "topic": "Topic"
+        },
+        "label": {
+            "title": "Title",
+            "topicCMD": "CMD topic",
+            "topicInfo": "Info topic",
+            "itemContainer": "Fields",
+            "buttonsContainer": "Action buttons"
+        },
+        "error": {
+            "no-group": "Group is missing"
+        }
+    }
+}

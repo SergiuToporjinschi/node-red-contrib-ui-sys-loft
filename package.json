@@ -1,0 +1,28 @@
+{
+  "name": "node-red-contrib-ui-sys-loft",
+  "version": "0.0.1",
+  "contributors": [],
+  "dependencies": {},
+  "deprecated": false,
+  "description": "A dashboard ui node colletion",
+  "homepage": "https://github.com/SergiuToporjinschi/node-red-contrib-ui-sys-loft#readme",
+  "node-red": {
+    "nodes": {
+      "ui_device_info": "ui_device_info/ui_device_info.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergiuToporjinschi/node-red-contrib-ui-sys-loft.git"
+  },
+  "keywords": [
+    "node-red",
+    "dashboard",
+    "node-modules"
+  ],
+  "author": "Sergiu Toporjinschi",
+  "license": "GPL 3.0",
+  "bugs": {
+    "url": "https://github.com/SergiuToporjinschi/node-red-contrib-ui-sys-loft/issues"
+  }
+}

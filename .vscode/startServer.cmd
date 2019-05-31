@@ -1,0 +1,1 @@
+nodemon C:\Users\sergi\AppData\Roaming\npm\node_modules\node-red\red.js --config nodemon.json
