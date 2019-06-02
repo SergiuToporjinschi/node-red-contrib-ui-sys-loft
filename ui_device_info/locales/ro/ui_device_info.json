@@ -7,7 +7,11 @@
             "topic": "Topic"
         },
         "label": {
-            "title": "Titlu"
+            "title": "Titlu",
+            "topicCMD": "CMD topic",
+            "topicInfo": "Info topic",
+            "itemContainer": "Campuri",
+            "buttonsContainer": "Butoane"
         },
         "error": {
             "no-group": "Grup neconfigurat"
