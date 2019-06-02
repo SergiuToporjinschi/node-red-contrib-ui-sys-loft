@@ -8,7 +8,10 @@
         },
         "label": {
             "title": "Title",
-            "topicCMD": "Command topic"
+            "topicCMD": "CMD topic",
+            "topicInfo": "Info topic",
+            "itemContainer": "Fields",
+            "buttonsContainer": "Action buttons"
         },
         "error": {
             "no-group": "Group is missing"
