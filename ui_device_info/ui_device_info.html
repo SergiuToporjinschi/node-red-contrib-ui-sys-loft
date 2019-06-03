@@ -129,10 +129,11 @@
                 sortable: true,
                 removable: true
             });
-            node.fields.forEach(element => {
-                $("#node-input-item-container").editableList('addItem', element);
-            });
-
+			if (node.fields && Array.isArray(node.fields) && node.fields.length > 0) {
+				node.fields.forEach(element => {
+					$("#node-input-item-container").editableList('addItem', element);
+				});
+			} 
             $("#node-input-buttons-container").css('min-height', '550px').css('min-width', '450px').editableList({
                 addItem: function (container, i, element) {
                     var row = $('<div/>', { class: "row" }).appendTo(container);
@@ -157,9 +158,11 @@
                 removable: true
             });
             debugger;
-            node.buttons.forEach(element => {
-                $("#node-input-buttons-container").editableList('addItem', element);
-            });
+			if (node.buttons && Array.isArray(node.buttons) && node.buttons.length > 0) {
+				node.buttons.forEach(element => {
+					$("#node-input-buttons-container").editableList('addItem', element);
+				});
+			}
         },
         oneditsave: function () {
             this.title = $('#node-input-title').val();

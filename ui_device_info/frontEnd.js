@@ -60,7 +60,7 @@ module.exports.init = function (config) {
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout="row" flex layout-align="space-between" class="margin-0 padingRight-0">
-                <div class="card-media table" style="margin-top: 15px;">
+                <div class="card-media flex table" style="margin-top: 15px;">
                     <div ng-repeat="(key, value) in itemList" class="row"> 
                         <div class="cell title">{{value.title}}:</div> <div class="cell value">{{value.value}}</div>
                     </div>
@@ -77,7 +77,6 @@ module.exports.init = function (config) {
 
     function controller($scope, events) {
         $scope.init = function (config) {
-            debugger;
             $scope.config = config;
             $scope.status = false;
             $scope.itemList = config.itemList;
