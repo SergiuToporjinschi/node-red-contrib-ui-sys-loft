@@ -71,9 +71,10 @@ backEndNode.prototype.getValue = function (item, msg) {
 
 //front to back
 backEndNode.prototype.beforeSend = function (msg, orig) {
-    if (orig && orig.msg) {
-        return { "payload": orig.msg };
-    }
+    // if (!(orig && orig.msg)) {
+    //     return;
+    // }
+    return { "payload": orig.msg };
 };
 
 module.exports = backEndNode;

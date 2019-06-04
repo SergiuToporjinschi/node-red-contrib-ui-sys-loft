@@ -61,8 +61,8 @@ module.exports.init = function (config) {
             </md-card-title>
             <md-card-content layout="row" flex layout-align="space-between" class="margin-0 padingRight-0">
                 <div class="card-media flex table" style="margin-top: 15px;">
-                    <div ng-repeat="(key, value) in itemList" class="row"> 
-                        <div class="cell title">{{value.title}}:</div> <div class="cell value">{{value.value}}</div>
+                    <div ng-repeat="item in itemList" class="row"> 
+                        <div class="cell title">{{item.title}}:</div> <div class="cell value">{{value.value}}</div>
                     </div>
                 </div>
                 <md-card-actions layout="column" class="margin-0">
@@ -76,7 +76,12 @@ module.exports.init = function (config) {
     }
 
     function controller($scope, events) {
+        debugger;
+        events.on("msg", function(){
+            debugger;
+        });
         $scope.init = function (config) {
+            debugger;
             $scope.config = config;
             $scope.status = false;
             $scope.itemList = config.itemList;
@@ -92,8 +97,9 @@ module.exports.init = function (config) {
             }
         });
         $scope.linkRefresh = function(){
-            $scope.send({ "cmd": "getInfo" });
-            $scope.send({ "cmd": "status" });
+            // $scope.send("refresh");
+            $scope.send({ "cmd": "getInfo", "topic": "test1"});
+            $scope.send({ "cmd": "status" , "topic": "test2"});
         }
     }
 

@@ -27,40 +27,57 @@ module.exports = function (RED) {
     };
     function getValue(item, node) {
         if (item.type === 'str') {
-            return item.name;
+            return item.content;
+        } else if (item.type === 'msg') {
+            return "";
         } else if (item.type === 'flow') {
-            return node.context().flow.get(item.name);
+            return node.context().flow.get(item.content);
         } else if (item.type === 'global') {
-            return node.context().global.get(item.name);
+            return node.context().global.get(item.content);
         } else if (item.type === 'json') {
-            return JSON.parse(item.name);
+            return JSON.parse(item.content);
+        } else if (item.type === 'jsonata') {node.util
+            return "jsonAta"
+            // return this.util.prepareJSONataExpression(item.name, this.node).evaluate(msg)
         } else {
-            return item.name;
+            return item.content;
         }
     }
-    function getFrontEndConfig(node, config) {
+    function adaptButtons(node, btnConfig) {
         var buttonList = [];
-        for (var i in config.buttons) {
-            var item = config.buttons[i];
+        for (var i in btnConfig) {
+            var item = btnConfig[i];
             buttonList.push({
-                title: item.title,
-                icon: item.icon,
-                value: getValue(item, node)
+                icon: item.content,
+                label: item.content,
+                topic: item.content,
+                payload: getValue(item, node)
             });
         }
+        return buttonList;
+    }
+
+    function adaptFields(node, fldConfig) {
         var itemList = [];
-        for (var i in config.fields) {
-            var item = config.fields[i];
+        for (var i in fldConfig) {this
+            var item = fldConfig[i];
             itemList.push({
-                title: item.title,
-                icon: item.icon,
-                value: ""
+                icon: getValue(item.icon, node),
+                title: getValue(item.title, node),
+                value: getValue(item.name, node),
+                fun: function () {debugger;}
             });
         }
+        return itemList;
+    }
+
+    function getFrontEndConfig(node, config) {
+        var fields = adaptFields(node, config.fields);
+        var btns = adaptButtons(node, config.buttons);
         return {
             title: config.title,
-            buttons: buttonList,
-            itemList: itemList
+            buttons: btns,
+            itemList: fields
         };
     };
     RED.nodes.registerType('ui_device_info', function getNode(config) {

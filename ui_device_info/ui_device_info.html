@@ -108,61 +108,76 @@
             $('#node-input-topic-info').val(this.topicInfo);
             $("#node-input-item-container").css('min-height', '550px').css('min-width', '450px').editableList({
                 addItem: function (container, i, element) {
+                    debugger;
                     var row = $('<div/>', { class: "row" }).appendTo(container);
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-icon", class: "labelCell" }).appendTo(fieldRow).text('Icon');
-                    var iconField = $('<input/>', { class: "node-input-field-icon", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str'] });
+                    var iconField = $('<input/>', { class: "node-input-field-icon", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str', 'msg', 'flow', 'global', 'jsonata'] });
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-title", class: "labelCell" }).appendTo(fieldRow).text('Title');
-                    var titleField = $('<input/>', { class: "node-input-field-title", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str'] });
+                    var titleField = $('<input/>', { class: "node-input-field-title", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str', 'msg', 'flow', 'global', 'jsonata'] });
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-value", class: "labelCell" }).appendTo(fieldRow).text('Value');
-                    var valueField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'msg', types: ['msg', 'flow', 'global', 'str', 'jsonata'] });
+                    var valueField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'msg', types: ['msg', 'str', 'flow', 'global', 'jsonata'] });
 
-                    titleField.typedInput('value', element.title);
-                    iconField.typedInput('value', element.icon);
-                    valueField.typedInput('type', element.type);
-                    valueField.typedInput('value', element.name);
+                    titleField.typedInput('value', element.title.content);
+                    titleField.typedInput('type', element.title.type);
+
+                    iconField.typedInput('value', element.icon.content);
+                    iconField.typedInput('type', element.icon.type);
+
+                    valueField.typedInput('value', element.name.content);
+                    valueField.typedInput('type', element.name.type);
                 },
                 sortable: true,
                 removable: true
             });
-			if (node.fields && Array.isArray(node.fields) && node.fields.length > 0) {
-				node.fields.forEach(element => {
-					$("#node-input-item-container").editableList('addItem', element);
-				});
-			} 
+            if (node.fields && Array.isArray(node.fields) && node.fields.length > 0) {
+                node.fields.forEach(element => {
+                    $("#node-input-item-container").editableList('addItem', element);
+                });
+            }
             $("#node-input-buttons-container").css('min-height', '550px').css('min-width', '450px').editableList({
                 addItem: function (container, i, element) {
                     var row = $('<div/>', { class: "row" }).appendTo(container);
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-icon", class: "labelCell" }).appendTo(fieldRow).text('Icon');
-                    var iconField = $('<input/>', { class: "node-input-field-icon", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str'] });
+                    var iconField = $('<input/>', { class: "node-input-field-icon", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str', 'msg', 'flow', 'global', 'jsonata'] });
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-title", class: "labelCell" }).appendTo(fieldRow).text('Label');
-                    var titleField = $('<input/>', { class: "node-input-field-title", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str'] });
+                    var titleField = $('<input/>', { class: "node-input-field-title", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str', 'msg', 'flow', 'global', 'jsonata'] });
+
+                    var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
+                    $('<label/>', { for: "node-input-field-topic", class: "labelCell" }).appendTo(fieldRow).text('Topic');
+                    var topicField = $('<input/>', { class: "node-input-field-topic", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str', 'msg', 'flow', 'global', 'jsonata'] });
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-value", class: "labelCell" }).appendTo(fieldRow).text('Payload');
-                    var valueField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'json', types: ['json', 'str', 'flow', 'global'] });
+                    var valueField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'json', types: ['json', 'str', 'msg', 'flow', 'global', 'jsonata'] });
 
-                    titleField.typedInput('value', element.title);
-                    iconField.typedInput('value', element.icon);
-                    valueField.typedInput('type', element.type);
-                    valueField.typedInput('value', element.name);
+                    titleField.typedInput('value', element.title.content);
+                    titleField.typedInput('type', element.title.type);
+                    
+                    topicField.typedInput('value', element.topic.content);
+                    topicField.typedInput('type', element.topic.type);
+
+                    iconField.typedInput('value', element.icon.content);
+                    iconField.typedInput('type', element.icon.type);
+                    
+                    valueField.typedInput('value', element.name.content);
+                    valueField.typedInput('type', element.name.type);
                 },
                 sortable: true,
                 removable: true
             });
-            debugger;
-			if (node.buttons && Array.isArray(node.buttons) && node.buttons.length > 0) {
-				node.buttons.forEach(element => {
-					$("#node-input-buttons-container").editableList('addItem', element);
-				});
-			}
+            if (node.buttons && Array.isArray(node.buttons) && node.buttons.length > 0) {
+                node.buttons.forEach(element => {
+                    $("#node-input-buttons-container").editableList('addItem', element);
+                });
+            }
         },
         oneditsave: function () {
             this.title = $('#node-input-title').val();
@@ -177,20 +192,19 @@
                 var item = $(this);
                 node.fields.push({
                     index: i,
-                    icon: item.find(".node-input-field-icon").typedInput('value'),
-                    title: item.find(".node-input-field-title").typedInput('value'),
-                    type: item.find(".node-input-field-value").typedInput('type'),
-                    name: item.find(".node-input-field-value").typedInput('value')
+                    icon: {content: item.find(".node-input-field-icon").typedInput('value'), type: item.find(".node-input-field-icon").typedInput('type')},
+                    title: {content: item.find(".node-input-field-title").typedInput('value'), type: item.find(".node-input-field-title").typedInput('type')},
+                    name:  {content: item.find(".node-input-field-value").typedInput('value'), type: item.find(".node-input-field-value").typedInput('type')}
                 });
             });
             buttons.each(function (i) {
                 var item = $(this);
                 node.buttons.push({
                     index: i,
-                    icon: item.find(".node-input-field-icon").typedInput('value'),
-                    title: item.find(".node-input-field-title").typedInput('value'),
-                    type: item.find(".node-input-field-value").typedInput('type'),
-                    name: item.find(".node-input-field-value").typedInput('value')
+                    icon: {content: item.find(".node-input-field-icon").typedInput('value'), type: item.find(".node-input-field-icon").typedInput('type')},
+                    title: {content: item.find(".node-input-field-title").typedInput('value'), type: item.find(".node-input-field-title").typedInput('type')},
+                    topic: {content: item.find(".node-input-field-topic").typedInput('value'), type: item.find(".node-input-field-topic").typedInput('type')},
+                    name: {content: item.find(".node-input-field-value").typedInput('value'), type: item.find(".node-input-field-value").typedInput('type')}
                 });
             });
 
