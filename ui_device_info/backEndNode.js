@@ -19,62 +19,67 @@ backEndNode.prototype.getWidget = function () {
         beforeSend: function () { return me.beforeSend.apply(me, arguments); },
     };
 }
-
-//back to front
-backEndNode.prototype.beforeEmit = function (msg, value) {
-    if (msg.topic === this.config.topicInfo) {
-        this.node.status = msg.payload.status == "online";
-        return {
-            msg: {
-                status: this.node.status,
-            }
-        };
-    } else {
-        var itemList = [];
-        for (var i in this.config.fields) {
-            var item = this.config.fields[i];
-            itemList.push({
-                title: item.title,
-                icon: item.icon,
-                value: this.getValue(item, msg)
-            });
-        }
-        return {
-            msg: {
-                fields: this.config.fields,
-                itemList: itemList
-            }
-        };
-    }
-};
-
-backEndNode.prototype.getValue = function (item, msg) {
-    if (item.type === 'msg') {
-        var spl = item.name.split(".");
-        var val = msg;
-        for (var i in spl) {
-            val = val[spl[i]];
-        }
-        return val;
-    } else if (item.type === 'str') {
-        return item.name;
+backEndNode.prototype.getValue = function (node, msg, item) {
+    if (item.type === 'str') {
+        return item.content;
+    } else if (item.type === 'msg' || item.type === 'jsonata') {
+        return this.util.prepareJSONataExpression(item.content, this.node).evaluate(msg);
     } else if (item.type === 'flow') {
-        return this.node.context().flow.get(item.name);
+        return node.context().flow.get(item.content);
     } else if (item.type === 'global') {
-        return this.node.context().global.get(item.name);
+        return node.context().global.get(item.content);
     } else if (item.type === 'json') {
-        return JSON.parse(item.name);
-    } else if (item.type === 'jsonata') {
-        return this.util.prepareJSONataExpression(item.name, this.node).evaluate(msg)
+        return JSON.parse(item.content);
+    } else {
+        return item.content;
     }
 }
 
+backEndNode.prototype.adaptButtons = function (node, msg, btnConfig) {
+    var buttonList = [];
+    for (var i in btnConfig) {
+        var item = btnConfig[i];
+        buttonList.push({
+            icon: this.getValue(node, msg, item.icon),
+            title: this.getValue(node, msg, item.title),
+            topic: this.getValue(node, msg, item.topic),
+            payload: this.getValue(node, msg, item.payload),
+            fun: function () { debugger; }
+        });
+    }
+    return buttonList;
+}
+
+backEndNode.prototype.adaptFields = function (node, msg, fldConfig) {
+    var itemList = [];
+    for (var i in fldConfig) {
+        var item = fldConfig[i];
+        var newItem = {
+            icon: this.getValue(node, msg, item.icon),
+            title: this.getValue(node, msg, item.title),
+            value: this.getValue(node, msg, item.name),
+        };
+        console.log(item); console.log(''); console.log(newItem); console.log(''); console.log(''); console.log(''); console.log('');
+        itemList.push(newItem);
+    }
+    return itemList;
+}
+
+//back to front
+backEndNode.prototype.beforeEmit = function (msg, value) {
+    var fields = this.adaptFields(this.node, msg, this.config.fields);
+    var buttons = this.adaptButtons(this.node, msg, this.config.buttons);
+    return {
+        msg: {
+            fields: fields,
+            buttons: buttons
+        }
+    };
+};
+
 //front to back
 backEndNode.prototype.beforeSend = function (msg, orig) {
-    // if (!(orig && orig.msg)) {
-    //     return;
-    // }
-    return { "payload": orig.msg };
+    return orig.msg;
 };
 
 module.exports = backEndNode;

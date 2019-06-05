@@ -6,6 +6,15 @@ module.exports.init = function (config) {
             .red {
                 color: red !important;
             }
+            .blue {
+                color: blue !important;
+            }
+            .green {
+                color: green !important;
+            }
+            .white {
+                color: white !important;
+            }
             .actionButton {
                 background: transparent !important;
                 color: black !important;
@@ -46,29 +55,25 @@ module.exports.init = function (config) {
             }
             </style>`;
     }
+
     function getHTML() {
         return String.raw`
         <div class='wrapper' layout="column" flex layout-align="center stretch" ng-init='init(${conf})'>
             <md-card-title layout="column" style="padding-right: 0px" flex = '15'>
                 <md-card-title-text layout="row">
                     <span flex class="md-headline card-title">{{config.title}}</span>
-                    <md-card-actions  style="padding-right: 0; margin:0">
-                        <md-button class="md-icon-button actionButton" aria-label="Favorite" ng-click='linkRefresh()'>
-                            <i class="fa" ng-class="{'fa-link': status, 'fa-chain-broken red': !status}" aria-hidden="true"></i>
-                        </md-button>
-                    </md-card-actions>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content layout="row" flex layout-align="space-between" class="margin-0 padingRight-0">
                 <div class="card-media flex table" style="margin-top: 15px;">
-                    <div ng-repeat="item in itemList" class="row"> 
-                        <div class="cell title">{{item.title}}:</div> <div class="cell value">{{value.value}}</div>
+                    <div ng-repeat="field in fields" class="row"> 
+                    <i class="fa" ng-class='field.icon' aria-hidden="true"></i><div class="cell title">{{field.title}}:</div> <div class="cell value">{{field.value}}</div>
                     </div>
                 </div>
                 <md-card-actions layout="column" class="margin-0">
-                    <md-button ng-repeat="item in config.buttons" class="md-icon-button actionButton" aria-label="{{item.title}}" ng-click="send(item.value)">
-                        <md-tooltip md-direction="left">{{item.title}}</md-tooltip>
-                        <i class="fa {{item.icon}}" aria-hidden="true"></i>
+                    <md-button ng-repeat="button in buttons" class="md-icon-button actionButton" aria-label="{{button.title}}" ng-click="onButton(button.payload, button.topic)">
+                        <md-tooltip md-direction="left">{{button.title}}</md-tooltip>
+                        <i class="fa {{button.icon}}" aria-hidden="true"></i>
                     </md-button>
                 </md-card-actions>
             </md-card-content>
@@ -76,30 +81,20 @@ module.exports.init = function (config) {
     }
 
     function controller($scope, events) {
-        debugger;
-        events.on("msg", function(){
-            debugger;
-        });
         $scope.init = function (config) {
-            debugger;
             $scope.config = config;
-            $scope.status = false;
-            $scope.itemList = config.itemList;
+            $scope.fields = config.fields;
+            $scope.buttons = config.buttons;
         };
         $scope.$watch('msg', function (msg) {
             if (!msg) {
                 return;
             }
-            if (msg.status !== undefined) {
-                $scope.status = msg.status;
-            } else {
-                $scope.itemList = msg.itemList;
-            }
+            $scope.fields = msg.fields;
+            $scope.buttons = msg.buttons;
         });
-        $scope.linkRefresh = function(){
-            // $scope.send("refresh");
-            $scope.send({ "cmd": "getInfo", "topic": "test1"});
-            $scope.send({ "cmd": "status" , "topic": "test2"});
+        $scope.onButton = function (payload, topic) {
+            $scope.send({ payload: payload, topic: topic});
         }
     }
 

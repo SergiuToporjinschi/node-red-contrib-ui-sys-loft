@@ -15,7 +15,7 @@
         width: 65px !important;
     }
 
-    .red-ui-typedInput-container {
+    .fieldRow>.red-ui-typedInput-container {
         width: 100% !important;
         margin-bottom: 5px;
     }
@@ -108,7 +108,6 @@
             $('#node-input-topic-info').val(this.topicInfo);
             $("#node-input-item-container").css('min-height', '550px').css('min-width', '450px').editableList({
                 addItem: function (container, i, element) {
-                    debugger;
                     var row = $('<div/>', { class: "row" }).appendTo(container);
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-icon", class: "labelCell" }).appendTo(fieldRow).text('Icon');
@@ -120,7 +119,7 @@
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-value", class: "labelCell" }).appendTo(fieldRow).text('Value');
-                    var valueField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'msg', types: ['msg', 'str', 'flow', 'global', 'jsonata'] });
+                    var payloadField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'msg', types: ['msg', 'str', 'flow', 'global', 'jsonata'] });
 
                     titleField.typedInput('value', element.title.content);
                     titleField.typedInput('type', element.title.type);
@@ -128,8 +127,8 @@
                     iconField.typedInput('value', element.icon.content);
                     iconField.typedInput('type', element.icon.type);
 
-                    valueField.typedInput('value', element.name.content);
-                    valueField.typedInput('type', element.name.type);
+                    payloadField.typedInput('value', element.name.content);
+                    payloadField.typedInput('type', element.name.type);
                 },
                 sortable: true,
                 removable: true
@@ -156,19 +155,19 @@
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-value", class: "labelCell" }).appendTo(fieldRow).text('Payload');
-                    var valueField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'json', types: ['json', 'str', 'msg', 'flow', 'global', 'jsonata'] });
+                    var payloadField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'json', types: ['json', 'str', 'msg', 'flow', 'global', 'jsonata'] });
+
+                    iconField.typedInput('value', element.icon.content);
+                    iconField.typedInput('type', element.icon.type);
 
                     titleField.typedInput('value', element.title.content);
                     titleField.typedInput('type', element.title.type);
                     
                     topicField.typedInput('value', element.topic.content);
                     topicField.typedInput('type', element.topic.type);
-
-                    iconField.typedInput('value', element.icon.content);
-                    iconField.typedInput('type', element.icon.type);
                     
-                    valueField.typedInput('value', element.name.content);
-                    valueField.typedInput('type', element.name.type);
+                    payloadField.typedInput('value', element.payload.content);
+                    payloadField.typedInput('type', element.payload.type);
                 },
                 sortable: true,
                 removable: true
@@ -204,7 +203,7 @@
                     icon: {content: item.find(".node-input-field-icon").typedInput('value'), type: item.find(".node-input-field-icon").typedInput('type')},
                     title: {content: item.find(".node-input-field-title").typedInput('value'), type: item.find(".node-input-field-title").typedInput('type')},
                     topic: {content: item.find(".node-input-field-topic").typedInput('value'), type: item.find(".node-input-field-topic").typedInput('type')},
-                    name: {content: item.find(".node-input-field-value").typedInput('value'), type: item.find(".node-input-field-value").typedInput('type')}
+                    payload: {content: item.find(".node-input-field-value").typedInput('value'), type: item.find(".node-input-field-value").typedInput('type')}
                 });
             });
 
