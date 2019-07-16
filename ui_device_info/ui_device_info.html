@@ -86,8 +86,6 @@
             titleType: {value: ''},
             topic: { value: ''},
             topicType: { value: ''},
-            title1: { value: ''},
-            topic1: { value: ''},
             fields: { value: '' },
             buttons: { value: '' }
         },
@@ -104,9 +102,8 @@
                 height: "#node-input-height",
                 group: "#node-input-group"
             });
-            debugger;
-            $('#node-input-title').typedInput({typeField:  $("#node-input-titleType"), default: "str", types: ['str', 'msg', 'flow', 'global', 'jsonata', 'env']});
-            $('#node-input-topic').typedInput({typeField:  $("#node-input-topicType"), default: 'str', types: ['str', 'msg', 'flow', 'global', 'jsonata', 'env']});
+            $('#node-input-title').typedInput({typeField:  $("#node-input-titleType"), default: "str", types: ['str', 'flow', 'global', 'jsonata', 'env']});
+            $('#node-input-topic').typedInput({typeField:  $("#node-input-topicType"), default: 'str', types: ['str', 'flow', 'global', 'jsonata', 'env']});
 
             $("#node-input-item-container").css('min-height', '550px').css('min-width', '450px').editableList({
                 addItem: function (container, i, element) {
@@ -153,7 +150,11 @@
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-topic", class: "labelCell" }).appendTo(fieldRow).text('Topic');
-                    var topicField = $('<input/>', { class: "node-input-field-topic", type: "text" }).appendTo(fieldRow).typedInput({ default: 'str', types: ['str', 'msg', 'flow', 'global', 'jsonata', 'env'] });
+                    var topicField = $('<input/>', { class: "node-input-field-topic", type: "text" }).appendTo(fieldRow).typedInput({ default: 'inh', types: ['str', 'msg', 'flow', 'global', 'jsonata', 'env', {
+                        value: "inh",
+                        label: 'inherited',
+                        hasValue: false
+                    }]});
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-value", class: "labelCell" }).appendTo(fieldRow).text('Payload');
@@ -185,12 +186,6 @@
             var buttons = $("#node-input-buttons-container").editableList('items');
             var node = this;
             
-            // $('#node-input-title').typedInput({typeField:  $("#node-input-titleType"), default: "str", types: ['str', 'msg', 'flow', 'global', 'jsonata', 'env']});
-            // $('#node-input-topic').typedInput({typeField:  $("#node-input-topicType"), default: 'str', types: ['str', 'msg', 'flow', 'global', 'jsonata', 'env']});
-
-            node.title1 = {content: $('#node-input-title').typedInput('value'), type: $('#node-input-title').typedInput('type')};
-            node.topic1 = {content: $('#node-input-topic').typedInput('value'), type: $('#node-input-topic').typedInput('type')};
-
             node.fields = [];
             node.buttons = [];
             items.each(function (i) {

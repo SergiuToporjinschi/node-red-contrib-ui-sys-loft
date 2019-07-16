@@ -59,7 +59,6 @@ backEndNode.prototype.adaptFields = function (node, msg, fldConfig) {
             title: this.getValue(node, msg, item.title),
             value: this.getValue(node, msg, item.name),
         };
-        console.log(item); console.log(''); console.log(newItem); console.log(''); console.log(''); console.log(''); console.log('');
         itemList.push(newItem);
     }
     return itemList;
