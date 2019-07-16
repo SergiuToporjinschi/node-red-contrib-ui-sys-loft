@@ -81,7 +81,7 @@ module.exports.init = function (config) {
     }
 
     function controller($scope, events) {
-        $scope.init = function (config) {
+        $scope.init = function (config) {debugger;
             $scope.config = config;
             $scope.fields = config.fields;
             $scope.buttons = config.buttons;

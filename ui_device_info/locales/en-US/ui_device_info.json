@@ -8,8 +8,7 @@
         },
         "label": {
             "title": "Title",
-            "topicCMD": "CMD topic",
-            "topicInfo": "Info topic",
+            "topic": "Topic",
             "itemContainer": "Fields",
             "buttonsContainer": "Action buttons"
         },
