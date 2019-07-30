@@ -19,45 +19,49 @@ backEndNode.prototype.getWidget = function () {
         beforeSend: function () { return me.beforeSend.apply(me, arguments); },
     };
 }
-backEndNode.prototype.getValue = function (node, msg, item) {
+backEndNode.prototype.getValue = function (msg, item) {
     if (item.type === 'str') {
         return item.content;
     } else if (item.type === 'msg' || item.type === 'jsonata') {
         return this.util.prepareJSONataExpression(item.content, this.node).evaluate(msg);
     } else if (item.type === 'flow') {
-        return node.context().flow.get(item.content);
+        return this.node.context().flow.get(item.content);
     } else if (item.type === 'global') {
-        return node.context().global.get(item.content);
+        return this.node.context().global.get(item.content);
     } else if (item.type === 'json') {
         return JSON.parse(item.content);
+    } else if (item.type === 'inh' && this.config.topic && this.config.topic != '') {
+        return this.getValue(msg, {
+            content: this.config.topic,
+            type: this.config.topicType
+        });
     } else {
         return item.content;
     }
 }
 
-backEndNode.prototype.adaptButtons = function (node, msg, btnConfig) {
+backEndNode.prototype.adaptButtons = function (msg, btnConfig) {
     var buttonList = [];
     for (var i in btnConfig) {
         var item = btnConfig[i];
         buttonList.push({
-            icon: this.getValue(node, msg, item.icon),
-            title: this.getValue(node, msg, item.title),
-            topic: this.getValue(node, msg, item.topic),
-            payload: this.getValue(node, msg, item.payload),
+            id: i,
+            icon: this.getValue(msg, item.icon),
+            title: this.getValue(msg, item.title),
             fun: function () { debugger; }
         });
     }
     return buttonList;
 }
 
-backEndNode.prototype.adaptFields = function (node, msg, fldConfig) {
+backEndNode.prototype.adaptFields = function (msg, fldConfig) {
     var itemList = [];
     for (var i in fldConfig) {
         var item = fldConfig[i];
         var newItem = {
-            icon: this.getValue(node, msg, item.icon),
-            title: this.getValue(node, msg, item.title),
-            value: this.getValue(node, msg, item.name),
+            icon: this.getValue(msg, item.icon),
+            title: this.getValue(msg, item.title),
+            value: this.getValue(msg, item.name),
         };
         itemList.push(newItem);
     }
@@ -66,8 +70,8 @@ backEndNode.prototype.adaptFields = function (node, msg, fldConfig) {
 
 //back to front
 backEndNode.prototype.beforeEmit = function (msg, value) {
-    var fields = this.adaptFields(this.node, msg, this.config.fields);
-    var buttons = this.adaptButtons(this.node, msg, this.config.buttons);
+    var fields = this.adaptFields(msg, this.config.fields);
+    var buttons = this.adaptButtons(msg, this.config.buttons);
     return {
         msg: {
             fields: fields,
@@ -78,7 +82,12 @@ backEndNode.prototype.beforeEmit = function (msg, value) {
 
 //front to back
 backEndNode.prototype.beforeSend = function (msg, orig) {
-    return orig.msg;
-};
-
+    var buttonId = Number.parseInt(orig.msg);
+    var message = {
+        topic: this.getValue(msg, this.config.buttons[buttonId].topic),
+        payload: this.getValue(msg, this.config.buttons[buttonId].payload)
+    }
+    console.log(message);
+    return message;
+}
 module.exports = backEndNode;

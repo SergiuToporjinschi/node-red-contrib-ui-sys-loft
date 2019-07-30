@@ -26,27 +26,15 @@ module.exports = function (RED) {
         }, backEnd));
     };
 
-    function getFrontEndConfig(backModule, node, config) {
-        var fields = backModule.adaptFields(node, {}, config.fields);
-        var buttons = backModule.adaptButtons(node, {}, config.buttons);
+    function getFrontEndConfig(backModule, config) {
+        var fields = backModule.adaptFields({}, config.fields);
+        var buttons = backModule.adaptButtons({}, config.buttons);
         return {
             title: config.title,
             fields: fields,
             buttons: buttons
         };
     };
-    function overwriteTopic(config) {
-        if (config.topic && config.topic != '') {
-            for (var i in config.buttons) {
-                var button = config.buttons[i];
-                if (button &&
-                    (!button.topic || button.topic.type == 'inh')) {
-                        button.topic.content = config.topic;
-                        button.topic.type = config.topicType;
-                }
-            }
-        }
-    }
     RED.nodes.registerType('ui_device_info', function getNode(config) {
         try {
             var node = this;
@@ -55,9 +43,8 @@ module.exports = function (RED) {
             var done = null;
             try {
                 var BackEndNode = require('./backEndNode.js');
-                overwriteTopic(config);
                 var backModule = new BackEndNode(node, config, RED.util);
-                var frontEnd = require('./frontEnd').init(JSON.stringify(getFrontEndConfig(backModule, node, config)));
+                var frontEnd = require('./frontEnd').init(JSON.stringify(getFrontEndConfig(backModule, config)));
                 done = addWidgetToDashBoard(node, config, backModule.getWidget(), frontEnd);
             } catch (error) {
                 throw error;

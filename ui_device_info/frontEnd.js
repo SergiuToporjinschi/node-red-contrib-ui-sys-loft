@@ -71,7 +71,7 @@ module.exports.init = function (config) {
                     </div>
                 </div>
                 <md-card-actions layout="column" class="margin-0">
-                    <md-button ng-repeat="button in buttons" class="md-icon-button actionButton" aria-label="{{button.title}}" ng-click="onButton(button.payload, button.topic)">
+                    <md-button ng-repeat="button in buttons" class="md-icon-button actionButton" aria-label="{{button.title}}" ng-click="onButton(button.id)">
                         <md-tooltip md-direction="left">{{button.title}}</md-tooltip>
                         <i class="fa {{button.icon}}" aria-hidden="true"></i>
                     </md-button>
@@ -81,7 +81,7 @@ module.exports.init = function (config) {
     }
 
     function controller($scope, events) {
-        $scope.init = function (config) {debugger;
+        $scope.init = function (config) {
             $scope.config = config;
             $scope.fields = config.fields;
             $scope.buttons = config.buttons;
@@ -93,8 +93,8 @@ module.exports.init = function (config) {
             $scope.fields = msg.fields;
             $scope.buttons = msg.buttons;
         });
-        $scope.onButton = function (payload, topic) {
-            $scope.send({ payload: payload, topic: topic});
+        $scope.onButton = function (id) {
+            $scope.send(id);
         }
     }
 
