@@ -95,7 +95,7 @@
         icon: "font-awesome/fa-info",
         paletteLabel: "Device info",
         label: function () { return this.name || "Device info"; },
-        oneditprepare: function () {
+        oneditprepare: function () {debugger;
             var node = this;
             $("#node-input-size").elementSizer({
                 width: "#node-input-width",
@@ -120,14 +120,14 @@
                     $('<label/>', { for: "node-input-field-value", class: "labelCell" }).appendTo(fieldRow).text('Value');
                     var payloadField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'msg', types: ['msg', 'str', 'flow', 'global', 'jsonata', 'env'] });
 
-                    titleField.typedInput('value', element.title.content);
                     titleField.typedInput('type', element.title.type);
+                    titleField.typedInput('value', element.title.content);
 
-                    iconField.typedInput('value', element.icon.content);
                     iconField.typedInput('type', element.icon.type);
+                    iconField.typedInput('value', element.icon.content);
 
-                    payloadField.typedInput('value', element.name.content);
                     payloadField.typedInput('type', element.name.type);
+                    payloadField.typedInput('value', element.name.content);
                 },
                 sortable: true,
                 removable: true
@@ -160,17 +160,17 @@
                     $('<label/>', { for: "node-input-field-value", class: "labelCell" }).appendTo(fieldRow).text('Payload');
                     var payloadField = $('<input/>', { class: "node-input-field-value", type: "text" }).appendTo(fieldRow).typedInput({ default: 'json', types: ['json', 'str', 'msg', 'flow', 'global', 'jsonata', 'env'] });
 
-                    iconField.typedInput('value', element.icon.content);
                     iconField.typedInput('type', element.icon.type);
+                    iconField.typedInput('value', element.icon.content);
 
-                    titleField.typedInput('value', element.title.content);
                     titleField.typedInput('type', element.title.type);
+                    titleField.typedInput('value', element.title.content);
                     
-                    topicField.typedInput('value', element.topic.content);
                     topicField.typedInput('type', element.topic.type);
+                    topicField.typedInput('value', element.topic.content);
                     
-                    payloadField.typedInput('value', element.payload.content);
                     payloadField.typedInput('type', element.payload.type);
+                    payloadField.typedInput('value', element.payload.content);
                 },
                 sortable: true,
                 removable: true
