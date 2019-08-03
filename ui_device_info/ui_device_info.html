@@ -19,6 +19,9 @@
         width: 100% !important;
         margin-bottom: 5px;
     }
+    /* .red-ui-typedInput-container .red-ui-typedInput-input {
+        padding-left: 14px;
+    } */
 </style>
 <script type="text/html text/x-red" data-template-name="ui_device_info">
     <div class="form-row">
@@ -45,13 +48,16 @@
         <input type="text" id="node-input-topic">
         <input type="hidden" id="node-input-topicType">
     </div>
-    <div class="form-row node-input-item-container-row">
-        <label for="node-input-item-container"><span data-i18n="ui_device_info.label.itemContainer"></span></label>
-        <ol id="node-input-item-container"></ol>
+    <div class="form-row">
+        <ul style="background: #fff;" id="list-tab-messages"></ul>
     </div>
-    <div class="form-row node-input-buttons-container-row">
-        <label for="node-input-buttons-container"><span data-i18n="ui_device_info.label.buttonsContainer"></span></label>
-        <ol id="node-input-buttons-container"></ol>
+    <div id="items-tabs-content">
+        <div id="labels-tab" style="height: 740px;" >
+            <div id="node-input-item-container"></div>
+        </div>
+        <div id="buttons-tab" style="height: 740px;">
+            <div id="node-input-buttons-container" ></div>
+        </div> 
     </div>
 </script>
 
@@ -82,10 +88,10 @@
                 }
             },
             height: { value: 3 },
-            title: {value: ''},
-            titleType: {value: ''},
-            topic: { value: ''},
-            topicType: { value: ''},
+            title: { value: '' },
+            titleType: { value: '' },
+            topic: { value: '' },
+            topicType: { value: '' },
             fields: { value: '' },
             buttons: { value: '' }
         },
@@ -95,17 +101,33 @@
         icon: "font-awesome/fa-info",
         paletteLabel: "Device info",
         label: function () { return this.name || "Device info"; },
-        oneditprepare: function () {debugger;
+        oneditprepare: function () {
+            var tabs = RED.tabs.create({
+                id: "list-tab-messages",
+                onchange: function (tab) {
+                    $("#items-tabs-content").children().hide();
+                    $("#" + tab.id).show();
+                }
+            });
+            tabs.addTab({
+                id: "labels-tab",
+                label: this._("ui_device_info.label.itemContainer")
+            });
+            tabs.addTab({
+                id: "buttons-tab",
+                label: this._("ui_device_info.label.buttonsContainer")
+            });
+
             var node = this;
             $("#node-input-size").elementSizer({
                 width: "#node-input-width",
                 height: "#node-input-height",
                 group: "#node-input-group"
             });
-            $('#node-input-title').typedInput({typeField:  $("#node-input-titleType"), default: "str", types: ['str', 'flow', 'global', 'jsonata', 'env']});
-            $('#node-input-topic').typedInput({typeField:  $("#node-input-topicType"), default: 'str', types: ['str', 'flow', 'global', 'jsonata', 'env']});
+            $('#node-input-title').typedInput({ typeField: $("#node-input-titleType"), default: "str", types: ['str', 'flow', 'global', 'jsonata', 'env'] });
+            $('#node-input-topic').typedInput({ typeField: $("#node-input-topicType"), default: 'str', types: ['str', 'flow', 'global', 'jsonata', 'env'] });
 
-            $("#node-input-item-container").css('min-height', '550px').css('min-width', '450px').editableList({
+            $("#node-input-item-container").css("height", "740px").editableList({
                 addItem: function (container, i, element) {
                     var row = $('<div/>', { class: "row" }).appendTo(container);
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
@@ -137,7 +159,7 @@
                     $("#node-input-item-container").editableList('addItem', element);
                 });
             }
-            $("#node-input-buttons-container").css('min-height', '550px').css('min-width', '450px').editableList({
+            $("#node-input-buttons-container").css("height", "740px").editableList({
                 addItem: function (container, i, element) {
                     var row = $('<div/>', { class: "row" }).appendTo(container);
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
@@ -150,11 +172,13 @@
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-topic", class: "labelCell" }).appendTo(fieldRow).text('Topic');
-                    var topicField = $('<input/>', { class: "node-input-field-topic", type: "text" }).appendTo(fieldRow).typedInput({ default: 'inh', types: ['str', 'msg', 'flow', 'global', 'jsonata', 'env', {
-                        value: "inh",
-                        label: 'inherited',
-                        hasValue: false
-                    }]});
+                    var topicField = $('<input/>', { class: "node-input-field-topic", type: "text" }).appendTo(fieldRow).typedInput({
+                        default: 'inh', types: ['str', 'msg', 'flow', 'global', 'jsonata', 'env', {
+                            value: "inh",
+                            label: 'inherited',
+                            hasValue: false
+                        }]
+                    });
 
                     var fieldRow = $('<div/>', { class: "fieldRow" }).appendTo(row);
                     $('<label/>', { for: "node-input-field-value", class: "labelCell" }).appendTo(fieldRow).text('Payload');
@@ -165,10 +189,10 @@
 
                     titleField.typedInput('type', element.title.type);
                     titleField.typedInput('value', element.title.content);
-                    
+
                     topicField.typedInput('type', element.topic.type);
                     topicField.typedInput('value', element.topic.content);
-                    
+
                     payloadField.typedInput('type', element.payload.type);
                     payloadField.typedInput('value', element.payload.content);
                 },
@@ -181,30 +205,30 @@
                 });
             }
         },
-        oneditsave: function () {debugger;
-            var items = $("#node-input-item-container").editableList('items'); 
+        oneditsave: function () {
+            var items = $("#node-input-item-container").editableList('items');
             var buttons = $("#node-input-buttons-container").editableList('items');
             var node = this;
-            
+
             node.fields = [];
             node.buttons = [];
             items.each(function (i) {
                 var item = $(this);
                 node.fields.push({
                     index: i,
-                    icon: {content: item.find(".node-input-field-icon").typedInput('value'), type: item.find(".node-input-field-icon").typedInput('type')},
-                    title: {content: item.find(".node-input-field-title").typedInput('value'), type: item.find(".node-input-field-title").typedInput('type')},
-                    name:  {content: item.find(".node-input-field-value").typedInput('value'), type: item.find(".node-input-field-value").typedInput('type')}
+                    icon: { content: item.find(".node-input-field-icon").typedInput('value'), type: item.find(".node-input-field-icon").typedInput('type') },
+                    title: { content: item.find(".node-input-field-title").typedInput('value'), type: item.find(".node-input-field-title").typedInput('type') },
+                    name: { content: item.find(".node-input-field-value").typedInput('value'), type: item.find(".node-input-field-value").typedInput('type') }
                 });
             });
             buttons.each(function (i) {
                 var item = $(this);
                 node.buttons.push({
                     index: i,
-                    icon: {content: item.find(".node-input-field-icon").typedInput('value'), type: item.find(".node-input-field-icon").typedInput('type')},
-                    title: {content: item.find(".node-input-field-title").typedInput('value'), type: item.find(".node-input-field-title").typedInput('type')},
-                    topic: {content: item.find(".node-input-field-topic").typedInput('value'), type: item.find(".node-input-field-topic").typedInput('type')},
-                    payload: {content: item.find(".node-input-field-value").typedInput('value'), type: item.find(".node-input-field-value").typedInput('type')}
+                    icon: { content: item.find(".node-input-field-icon").typedInput('value'), type: item.find(".node-input-field-icon").typedInput('type') },
+                    title: { content: item.find(".node-input-field-title").typedInput('value'), type: item.find(".node-input-field-title").typedInput('type') },
+                    topic: { content: item.find(".node-input-field-topic").typedInput('value'), type: item.find(".node-input-field-topic").typedInput('type') },
+                    payload: { content: item.find(".node-input-field-value").typedInput('value'), type: item.find(".node-input-field-value").typedInput('type') }
                 });
             });
 
