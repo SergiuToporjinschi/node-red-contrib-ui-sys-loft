@@ -1,0 +1,19 @@
+{
+    "ui_device_edit_settings": {
+        "node": {
+            "size": "Size",
+            "name": "Name",
+            "group": "Group",
+            "topic": "Topic"
+        },
+        "label": {
+            "title": "Title",
+            "devList": "Device list",
+            "broker": "MQTT broker",
+            "cmdTopic": "CMD topic"
+        },
+        "error": {
+            "no-group": "Group is missing"
+        }
+    }
+}

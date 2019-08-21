@@ -1,14 +1,17 @@
 {
   "name": "node-red-contrib-ui-sys-loft",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "contributors": [],
-  "dependencies": {},
+  "dependencies": {
+    "socket.io": "*"
+  },
   "deprecated": false,
   "description": "A dashboard ui node colletion",
   "homepage": "https://github.com/SergiuToporjinschi/node-red-contrib-ui-sys-loft#readme",
   "node-red": {
     "nodes": {
-      "ui_device_info": "ui_device_info/ui_device_info.js"
+      "ui_device_info": "ui_device_info/ui_device_info.js",
+      "ui_device_edit_settings": "ui_device_edit_settings/ui_device_edit_settings.js"
     }
   },
   "repository": {

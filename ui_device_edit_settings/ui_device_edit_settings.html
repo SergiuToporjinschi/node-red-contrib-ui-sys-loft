@@ -1,0 +1,132 @@
+<style>
+    .red-ui-typedInput-container {
+        width: 60% !important;
+        margin-bottom: 5px;
+    }
+
+    .container {
+        width: 100%;
+    }
+</style>
+<script type="text/html text/x-red" data-template-name="ui_device_edit_settings">
+    <div class="container">
+        <div class="form-row">
+            <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="ui_device_edit_settings.node.name"></span></label>
+            <input type="text" id="node-input-name">
+        </div>
+        <div class="form-row" id="template-row-group">
+            <label for="node-input-group"><i class="fa fa-table"></i> <span data-i18n="ui_device_edit_settings.node.group"></span></label>
+            <input type="text" id="node-input-group">
+        </div>
+        <div class="form-row" id="template-row-size">
+            <label><i class="fa fa-object-group"></i> <span data-i18n="ui_device_edit_settings.node.size"></span></label>
+            <input type="hidden" id="node-input-width">
+            <input type="hidden" id="node-input-height">
+            <button class="editor-button" id="node-input-size"></button>
+        </div>
+        <div class="form-row">
+            <label for="node-input-broker"><i class="fa fa-globe"></i> <span data-i18n="ui_device_edit_settings.label.broker"></span></label>
+            <input type="text" id="node-input-broker">
+        </div>
+        <div class="form-row">
+            <label for="node-input-title"><i class="fa fa-tasks"></i> <span data-i18n="ui_device_edit_settings.label.title"></span></label>
+            <input type="text" id="node-input-title">
+            <input type="hidden" id="node-input-titleType">
+        </div>
+        <div class="form-row">
+            <label for="node-input-devList"><i class="fa fa-tasks"></i> <span data-i18n="ui_device_edit_settings.label.devList"></span></label>
+            <input type="text" id="node-input-devList">
+            <input type="hidden" id="node-input-devListType">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cmdTopic"><i class="fa fa-tasks"></i> <span data-i18n="ui_device_edit_settings.label.cmdTopic"></span></label>
+            <input type="text" id="node-input-cmdTopic" placeholder="IOT/#/cmd">
+            <input type="hidden" id="node-input-cmdTopicType">
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType("ui_device_edit_settings", {
+        category: 'SysLoft',
+        color: 'rgb( 63, 173, 181)',
+        defaults: {
+            name: { value: 'Device edit settings' },
+            group: {
+                type: 'ui_group', required: true,
+                validate: function (v) {
+                    return v && RED.nodes.node(v) && RED.nodes.node(v).type === 'ui_group';
+                }
+            },
+            order: { value: 0 },
+            width: {
+                value: 8,
+                required: true,
+                validate: function (v) {
+                    var valid = true;
+                    var width = v || 0;
+                    var currentGroup = $('#node-input-group').val() || this.group;
+                    var groupNode = RED.nodes.node(currentGroup);
+                    valid = groupNode && + width <= +groupNode.width && +width >= 5;
+                    $("#node-input-size").toggleClass("input-error", !valid);
+                    return valid;
+                }
+            },
+            height: {
+                value: 9,
+                required: true,
+                validate: function (v) {
+                    var valid = true;
+                    var width = v || 0;
+                    valid = +width >= 4;
+                    $("#node-input-size").toggleClass("input-error", !valid);
+                    return valid;
+                }
+            },
+            broker: { type: "mqtt-broker", required: true },
+            title: { value: '' },
+            titleType: { value: '' },
+            devList: { value: '', required: true },
+            devListType: { value: '' },
+            cmdTopic: { value: '', required: true },
+            cmdTopicType: { value: '' }
+        },
+        storeFrontEndInputAsState: true,
+        inputs: 0,
+        outputs: 1,
+        align: "left",
+        icon: "font-awesome/fa-cogs",
+        paletteLabel: "Device edit settings",
+        label: function () { return this.name || "Device edit settings"; },
+        oneditprepare: function () {
+            $("#node-input-size").elementSizer({
+                width: "#node-input-width",
+                height: "#node-input-height",
+                group: "#node-input-group"
+            });
+            $('#node-input-title').typedInput({ typeField: $("#node-input-titleType"), default: "str", types: ['str', 'flow', 'global', 'jsonata', 'env'] });
+            $('#node-input-devList').typedInput({ typeField: $("#node-input-devListType"), default: "str", types: ['str', 'flow', 'global', 'jsonata', 'env'] });
+            $('#node-input-cmdTopic').typedInput({ typeField: $("#node-input-cmdTopicTypers"), default: "str", types: ['str'] });
+        },
+        oneditsave: function () {
+        },
+        oneditcancel: function () {
+        },
+        oneditresize: function (size) {
+        }
+    });
+</script>
+<script type="text/html text/x-red" data-help-name="ui_device_edit_settings">
+    <p>A dashboard ui interface node for displaying a progress bar;</p>
+    <h3>Properties</h3>
+    <dl class="message-properties">
+        <dt>Topic <span class="property-type">string</span></dt>
+        <dd>Topic sent with all messages; this cannot be taken from input since it expects a fixed topic</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>Node <span class="property-type">determinate/indeterminate</span></dt>
+        <dd>Display mode</dd>
+        <dd>- determinate - the input value is displayed as procentaje from 0 to 100</dd>
+        <dd>- indeterminate - the progress will be display as an infinite animation</dd>
+    </dl>
+</script>

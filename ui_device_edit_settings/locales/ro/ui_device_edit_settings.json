@@ -1,0 +1,19 @@
+{
+    "ui_device_edit_settings": {
+        "node": {
+            "size": "Dimensiune",
+            "name": "Nume",
+            "group": "Grup",
+            "topic": "Topic"
+        },
+        "label": {
+            "title": "Titlu",
+            "devList": "List deviceuri",
+            "broker": "MQTT Server",
+            "cmdTopic": "Topic comanda"
+        },
+        "error": {
+            "no-group": "Grup neconfigurat"
+        }
+    }
+}

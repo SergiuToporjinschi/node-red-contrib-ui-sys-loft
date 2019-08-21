@@ -16,7 +16,7 @@ module.exports = function (RED) {
             templateScope: "local",
             emitOnlyNewValues: false,
             forwardInputMessages: false,
-            storeFrontEndInputAsState: false,
+            storeFrontEndInputAsState: true,
 
             //node display configuration
             width: parseInt(config.width),
@@ -25,26 +25,41 @@ module.exports = function (RED) {
             order: config.order || 0
         }, backEnd));
     };
-
     function getFrontEndConfig(backModule, config) {
-        var fields = backModule.adaptFields({}, config.fields);
-        var buttons = backModule.adaptButtons({}, config.buttons);
+        var devListExp = backModule.getValue({}, { content: config.devList, type: config.devListType });
+        var devList = [];
+        for (var i in devListExp) {
+            devList.push({ status: devListExp[i], name: i });
+        }
         return {
-            title: config.title,
-            fields: fields,
-            buttons: buttons
+            title: backModule.getValue({}, { content: config.title, type: config.titleType }),
+            devList: devList
         };
     };
-
-    RED.nodes.registerType('ui_device_info', function getNode(config) {
+    RED.nodes.registerType('ui_device_edit_settings', function getNode(config) {
         try {
             var node = this;
             RED.nodes.createNode(this, config);
+
             //initialize backEnd module
+            node.brokerConn = RED.nodes.getNode(config.broker);
+            node.brokerConn.register(this);
+            if (node.brokerConn) {
+                if (node.brokerConn.connected) {
+                    node.status({ fill: "green", shape: "dot", text: "node-red:common.status.connected" });
+                } else {
+                    node.status({ fill: "red", shape: "dot", text: "node-red:common.status.disconnected" });
+                }
+            } else {
+                node.status({ fill: "red", shape: "dot", text: "node-red:common.status.disconnected" });
+            }
+
             var done = null;
             try {
                 var BackEndNode = require('./backEndNode.js');
-                var backModule = new BackEndNode(node, config, RED.util);
+                var socketio = require('socket.io')(RED.server);
+                socketio.of('/ui_device_edit_settings');
+                var backModule = new BackEndNode(node, config, RED.util, socketio);
                 var frontEnd = require('./frontEnd').init(JSON.stringify(getFrontEndConfig(backModule, config)));
                 done = addWidgetToDashBoard(node, config, backModule.getWidget(), frontEnd);
             } catch (error) {
@@ -53,11 +68,13 @@ module.exports = function (RED) {
         } catch (e) {
             console.log(e);
         }
-
-        node.on("input", function (msg) {
-            node.type = msg.topic.endsWith("status") ? "status" : "response";
-        });
-
         node.on("close", done);
+        node.on("close", function (removed, done) {
+            if (node.brokerConn) {
+                node.brokerConn.deregister(node, done);
+            } else {
+                done();
+            }
+        });
     });
 };
