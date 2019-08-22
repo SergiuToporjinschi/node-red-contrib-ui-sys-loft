@@ -44,15 +44,7 @@ module.exports.init = function (config) {
                 font-weight: 400;
                 font-size: 1em;
             }
-            .title {
-                font-weight: 700;
-                font-size: 1em;
-            }
-            .card-title {
-                font-weight: 700;
-                font-size: 2em;
-                font-family: sans-serif;
-            }
+
             .md-button.md-icon-button {
                 margin: 0px !important;
             }
@@ -64,11 +56,6 @@ module.exports.init = function (config) {
         <script src="../vendor/ace/snippets/json.js" type="text/javascript" charset="utf-8"></script>
         <script src="../vendor/ace/mode-json.js" type="text/javascript" charset="utf-8"></script>
         <div class='wrapper' layout="column" flex layout-align="center stretch" ng-init='init(${conf})'>
-            <md-card-title layout="column" style="padding-right: 0px" flex = '15'>
-                <md-card-title-text layout="row">
-                    <span flex class="md-headline card-title">{{config.title}}</span>
-                </md-card-title-text>
-            </md-card-title>
             <section layout="row" layout-align="space-around center">
                 <md-input-container flex>
                     <label>Select device</label>

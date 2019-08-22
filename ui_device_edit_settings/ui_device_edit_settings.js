@@ -32,7 +32,6 @@ module.exports = function (RED) {
             devList.push({ status: devListExp[i], name: i });
         }
         return {
-            title: backModule.getValue({}, { content: config.title, type: config.titleType }),
             devList: devList
         };
     };

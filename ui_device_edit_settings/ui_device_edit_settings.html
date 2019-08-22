@@ -29,11 +29,6 @@
             <input type="text" id="node-input-broker">
         </div>
         <div class="form-row">
-            <label for="node-input-title"><i class="fa fa-tasks"></i> <span data-i18n="ui_device_edit_settings.label.title"></span></label>
-            <input type="text" id="node-input-title">
-            <input type="hidden" id="node-input-titleType">
-        </div>
-        <div class="form-row">
             <label for="node-input-devList"><i class="fa fa-tasks"></i> <span data-i18n="ui_device_edit_settings.label.devList"></span></label>
             <input type="text" id="node-input-devList">
             <input type="hidden" id="node-input-devListType">
@@ -77,18 +72,41 @@
                 required: true,
                 validate: function (v) {
                     var valid = true;
-                    var width = v || 0;
-                    valid = +width >= 4;
+                    var height = v || 0;
+                    valid = +height >= 4;
                     $("#node-input-size").toggleClass("input-error", !valid);
                     return valid;
                 }
             },
-            broker: { type: "mqtt-broker", required: true },
-            title: { value: '' },
-            titleType: { value: '' },
-            devList: { value: '', required: true },
+            broker: {
+                type: "mqtt-broker",
+                required: true,
+                validate: function (v) {
+                    var valid = true;
+                    valid = v != undefined && v !== "_ADD_";
+                    $("#node-input-size").toggleClass("input-error", !valid);
+                    return valid;
+                }
+            },
+            devList: {
+                value: '', 
+                required: true,
+                validate: function (v) {
+                    var valid = v != undefined && v.trim().length > 0;
+                    $("#node-input-size").toggleClass("input-error", !valid);
+                    return valid;
+                }
+            },
             devListType: { value: '' },
-            cmdTopic: { value: '', required: true },
+            cmdTopic: {
+                value: '',
+                 required: true,
+                validate: function (v) {
+                    var valid = v != undefined && v.trim().length > 0;
+                    $("#node-input-size").toggleClass("input-error", !valid);
+                    return valid;
+                }
+            },
             cmdTopicType: { value: '' }
         },
         storeFrontEndInputAsState: true,
@@ -104,7 +122,6 @@
                 height: "#node-input-height",
                 group: "#node-input-group"
             });
-            $('#node-input-title').typedInput({ typeField: $("#node-input-titleType"), default: "str", types: ['str', 'flow', 'global', 'jsonata', 'env'] });
             $('#node-input-devList').typedInput({ typeField: $("#node-input-devListType"), default: "str", types: ['str', 'flow', 'global', 'jsonata', 'env'] });
             $('#node-input-cmdTopic').typedInput({ typeField: $("#node-input-cmdTopicTypers"), default: "str", types: ['str'] });
         },
