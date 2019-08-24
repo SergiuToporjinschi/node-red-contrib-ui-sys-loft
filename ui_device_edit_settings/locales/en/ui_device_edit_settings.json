@@ -10,7 +10,9 @@
             "title": "Title",
             "devList": "Device list",
             "broker": "MQTT broker",
-            "cmdTopic": "CMD topic"
+            "cmdTopic": "CMD topic",
+            "getCmd" : "Get CMD",
+            "setCmd" : "Set CMD"
         },
         "error": {
             "no-group": "Group is missing"

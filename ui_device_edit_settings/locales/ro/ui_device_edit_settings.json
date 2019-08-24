@@ -10,7 +10,9 @@
             "title": "Titlu",
             "devList": "List deviceuri",
             "broker": "MQTT Server",
-            "cmdTopic": "Topic comanda"
+            "cmdTopic": "Topic comanda",
+            "getCmd" : "Comanda get",
+            "setCmd" : "Comanda set"
         },
         "error": {
             "no-group": "Grup neconfigurat"

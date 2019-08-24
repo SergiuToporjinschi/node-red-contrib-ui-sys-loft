@@ -20,24 +20,26 @@ function backEndNode(node, config, util, io) {
             socket.emit('list.dev.resp', list);
         });
         socket.on('dev.getConfig', function (val, fn) {
+            var devTopic = me.getValue(null, { type: config.cmdTopicType, content: config.cmdTopic }).replace('#', val);
+            var getCMD = me.getValue(null, { type: config.getCmdType, content: config.getCmd });
             if (!node.brokerConn.users[node.id]) {
                 node.brokerConn.register(node);
             }
-            var devTopic = "IOT/" + val + "/cmd";
             node.brokerConn.subscribe(devTopic + "/resp", 2, function (topic, payload, msg) {
                 console.log('getConfig', topic, payload);
                 socket.emit('dev.getConfig.resp', JSON.parse(payload.toString()));
                 node.brokerConn.unsubscribe(topic);
             });
-            node.brokerConn.publish({ topic: devTopic, payload: "{\"cmd\" : \"getConfig\"}" });
+            node.brokerConn.publish({ topic: devTopic, payload: getCMD });
         });
         socket.on('dev.save.cofig', function (val, fn) {
+            var devTopic = me.getValue(null, { type: config.cmdTopicType, content: config.cmdTopic }).replace('#', val.dev);
+            var params = JSON.parse(JSON.stringify(me.getValue(null, { type: config.setCmdType, content: config.setCmd })).replace('\"#\"', val.config));
             if (!node.brokerConn.users[node.id]) {
                 node.brokerConn.register(node);
             }
-            var devTopic = "IOT/" + val.dev + "/cmd";
             console.log('dev.save.cofig', devTopic);
-            node.brokerConn.publish({ topic: devTopic, payload: { "cmd": "setConfig", "params": val.config } });
+            node.brokerConn.publish({ topic: devTopic, payload: params });
         });
         console.log('client connected');
     });

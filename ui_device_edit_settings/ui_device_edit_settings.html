@@ -38,6 +38,16 @@
             <input type="text" id="node-input-cmdTopic" placeholder="IOT/#/cmd">
             <input type="hidden" id="node-input-cmdTopicType">
         </div>
+        <div class="form-row">
+            <label for="node-input-getCmd"><i class="fa fa-tasks"></i> <span data-i18n="ui_device_edit_settings.label.getCmd"></span></label>
+            <input type="text" id="node-input-getCmd" placeholder="">
+            <input type="hidden" id="node-input-getCmdType">
+        </div>
+        <div class="form-row">
+            <label for="node-input-setCmd"><i class="fa fa-tasks"></i> <span data-i18n="ui_device_edit_settings.label.setCmd"></span></label>
+            <input type="text" id="node-input-setCmd" placeholder="">
+            <input type="hidden" id="node-input-setCmdType">
+        </div>
     </div>
 </script>
 
@@ -84,30 +94,34 @@
                 validate: function (v) {
                     var valid = true;
                     valid = v != undefined && v !== "_ADD_";
-                    $("#node-input-size").toggleClass("input-error", !valid);
+                    $("#node-input-broker").toggleClass("input-error", !valid);
                     return valid;
                 }
             },
             devList: {
-                value: '', 
+                value: '',
                 required: true,
                 validate: function (v) {
                     var valid = v != undefined && v.trim().length > 0;
-                    $("#node-input-size").toggleClass("input-error", !valid);
+                    $("#node-input-devList").toggleClass("input-error", !valid);
                     return valid;
                 }
             },
             devListType: { value: '' },
             cmdTopic: {
                 value: '',
-                 required: true,
+                required: true,
                 validate: function (v) {
                     var valid = v != undefined && v.trim().length > 0;
-                    $("#node-input-size").toggleClass("input-error", !valid);
+                    $("#node-input-cmdTopic").toggleClass("input-error", !valid);
                     return valid;
                 }
             },
-            cmdTopicType: { value: '' }
+            cmdTopicType: { value: '' },
+            getCmd: { value: '', required: true },
+            getCmdType: { value: '' },
+            setCmd: { value: '', required: true },
+            setCmdType: { value: '' }
         },
         storeFrontEndInputAsState: true,
         inputs: 0,
@@ -123,7 +137,9 @@
                 group: "#node-input-group"
             });
             $('#node-input-devList').typedInput({ typeField: $("#node-input-devListType"), default: "str", types: ['str', 'flow', 'global', 'jsonata', 'env'] });
-            $('#node-input-cmdTopic').typedInput({ typeField: $("#node-input-cmdTopicTypers"), default: "str", types: ['str'] });
+            $('#node-input-cmdTopic').typedInput({ typeField: $("#node-input-cmdTopicType"), default: "str", types: ['str'] });
+            $('#node-input-getCmd').typedInput({ typeField: $("#node-input-getCmdType"), default: "str", types: ['str', 'json', 'flow', 'global', 'jsonata', 'env'] });
+            $('#node-input-setCmd').typedInput({ typeField: $("#node-input-setCmdType"), default: "str", types: ['str', 'json', 'flow', 'global', 'jsonata', 'env'] });
         },
         oneditsave: function () {
         },
