@@ -44,10 +44,6 @@ module.exports.init = function (config) {
                 font-weight: 400;
                 font-size: 1em;
             }
-
-            .md-button.md-icon-button {
-                margin: 0px !important;
-            }
             </style>`;
     }
     function getHTML() {
