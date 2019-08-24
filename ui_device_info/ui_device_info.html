@@ -237,16 +237,29 @@
     });
 </script>
 <script type="text/html text/x-red" data-help-name="ui_device_info">
-    <p>A dashboard ui interface node for displaying a progress bar;</p>
+    <p>A dashboard ui interface node for displaying information about device;</p>
     <h3>Properties</h3>
     <dl class="message-properties">
-        <dt>Topic <span class="property-type">string</span></dt>
-        <dd>Topic sent with all messages; this cannot be taken from input since it expects a fixed topic</dd>
+        <dt>Title <span class="property-type">string</span></dt>
+        <dd>A string to be set as title for information set</dd>
     </dl>
     <dl class="message-properties">
-        <dt>Node <span class="property-type">determinate/indeterminate</span></dt>
-        <dd>Display mode</dd>
-        <dd>- determinate - the input value is displayed as procentaje from 0 to 100</dd>
-        <dd>- indeterminate - the progress will be display as an infinite animation</dd>
+        <dt>Topic <span class="property-type">string</span></dt>
+        <dd>Topic to be used as template</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>Fields</dt>
+        <dd>A list of fields to be disaplyed</dd>
+        <dd>- <b>icon</b> - an optional font-awesome icon</dd>
+        <dd>- <b>title</b> - title/label for information</dd>
+        <dd>- <b>value</b> - expression wich will be parsed to get the value</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>Action buttons</dt>
+        <dd>A list of buttons displayed on right side</dd>
+        <dd>- <b>icon</b> - an optional font-awesome icon</dd>
+        <dd>- <b>label</b> - label for button (displayed as tooltip)</dd>
+        <dd>- <b>topic</b> - topic on which the click command will be send</dd>
+        <dd>- <b>payload</b> - expression to parse for obtaining the payload to be send on click</dd>
     </dl>
 </script>

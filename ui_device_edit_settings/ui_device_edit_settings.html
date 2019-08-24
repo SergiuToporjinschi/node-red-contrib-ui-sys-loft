@@ -150,16 +150,26 @@
     });
 </script>
 <script type="text/html text/x-red" data-help-name="ui_device_edit_settings">
-    <p>A dashboard ui interface node for displaying a progress bar;</p>
+    <p>A dashboard ui interface for modify the settings on device;</p>
     <h3>Properties</h3>
     <dl class="message-properties">
-        <dt>Topic <span class="property-type">string</span></dt>
-        <dd>Topic sent with all messages; this cannot be taken from input since it expects a fixed topic</dd>
+        <dt>MQTT broker <span class="property-type">MQTT-broker</span></dt>
+        <dd>MQTT broker to use for comunication</dd>
     </dl>
     <dl class="message-properties">
-        <dt>Node <span class="property-type">determinate/indeterminate</span></dt>
-        <dd>Display mode</dd>
-        <dd>- determinate - the input value is displayed as procentaje from 0 to 100</dd>
-        <dd>- indeterminate - the progress will be display as an infinite animation</dd>
+        <dt>Device list <span class="property-type">json</span></dt>
+        <dd>A reference to JSON with device name as keys</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>CMD topic <span class="property-type">json</span></dt>
+        <dd>Topic used to send commands # will be replaced with device name</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>Get CMD  <span class="property-type">String/JSON</span></dt>
+        <dd>A command to be send to MQTT to get configuration</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>Set CMD  <span class="property-type">String/JSON</span></dt>
+        <dd>A command to be send to MQTT to set the new configuration</dd>
     </dl>
 </script>
