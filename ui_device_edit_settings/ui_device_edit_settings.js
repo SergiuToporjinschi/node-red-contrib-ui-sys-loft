@@ -52,7 +52,6 @@ module.exports = function (RED) {
             } else {
                 node.status({ fill: "red", shape: "dot", text: "node-red:common.status.disconnected" });
             }
-
             var done = null;
             try {
                 var BackEndNode = require('./backEndNode.js');
@@ -65,7 +64,7 @@ module.exports = function (RED) {
                 throw error;
             }
         } catch (e) {
-            console.log(e);
+            this.error(e);
         }
         node.on("close", done);
         node.on("close", function (removed, done) {

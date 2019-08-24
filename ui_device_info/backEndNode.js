@@ -89,7 +89,7 @@ backEndNode.prototype.beforeSend = function (msg, orig) {
         topic: this.getValue(msg, this.config.buttons[buttonId].topic),
         payload: this.getValue(msg, this.config.buttons[buttonId].payload)
     }
-    console.log(message);
+    this.node.debug(message);
     return message;
 }
 module.exports = backEndNode;

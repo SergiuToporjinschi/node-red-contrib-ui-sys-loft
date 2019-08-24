@@ -10,13 +10,12 @@ function backEndNode(node, config, util, io) {
     io.on('connection', function (socket) {
         socket.on('list.dev', function (val, fn) {
             var list = me.getValue(null, { type: config.devListType, content: config.devList });
-            console.log('list', list);
             for (var i in list) {
                 if (list[i] !== 'online') {
                     delete list[i];
                 }
             }
-            console.log('sendList', list);
+            node.debug('sendList:' + JSON.stringify(list));
             socket.emit('list.dev.resp', list);
         });
         socket.on('dev.getConfig', function (val, fn) {
@@ -26,7 +25,9 @@ function backEndNode(node, config, util, io) {
                 node.brokerConn.register(node);
             }
             node.brokerConn.subscribe(devTopic + "/resp", 2, function (topic, payload, msg) {
-                console.log('getConfig', topic, payload);
+                node.debug('getConfig.topic:' + topic);
+                node.debug('getConfig.payload:' + payload.toString());
+
                 socket.emit('dev.getConfig.resp', JSON.parse(payload.toString()));
                 node.brokerConn.unsubscribe(topic);
             });
@@ -38,10 +39,10 @@ function backEndNode(node, config, util, io) {
             if (!node.brokerConn.users[node.id]) {
                 node.brokerConn.register(node);
             }
-            console.log('dev.save.cofig', devTopic);
+            node.debug('dev.save.cofig.topic:' + devTopic);
             node.brokerConn.publish({ topic: devTopic, payload: params });
         });
-        console.log('client connected');
+        node.debug('client connected');
     });
 }
 

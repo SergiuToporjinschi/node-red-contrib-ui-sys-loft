@@ -51,7 +51,7 @@ module.exports = function (RED) {
                 throw error;
             }
         } catch (e) {
-            console.log(e);
+            this.error(e);
         }
 
         node.on("input", function (msg) {

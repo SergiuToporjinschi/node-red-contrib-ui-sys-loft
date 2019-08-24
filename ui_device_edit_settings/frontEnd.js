@@ -81,13 +81,13 @@ module.exports.init = function (config) {
         $scope.devList = undefined;
         $scope.error;
         $scope.my.on('connect', function () {
-            console.log("connected");
+            console.debug("connected");
             $scope.my.on('list.dev.resp', function (payload) {
-                console.log('received', payload);
+                console.debug('received', payload);
                 $scope.devList = payload;
             });
             $scope.my.on('dev.getConfig.resp', function (payload) {
-                console.log('received configuration', payload);
+                console.debug('received configuration', payload);
                 $scope.editor.setValue(JSON.stringify(payload, null, 4), -1);
                 $scope.editor.setReadOnly(false);
             });
@@ -106,14 +106,14 @@ module.exports.init = function (config) {
         }
         $scope.getConfig = function () {
             $scope.error = undefined;
-            console.log("getConfig of", $scope.selectedDevice);
+            console.debug("getConfig of", $scope.selectedDevice);
             $scope.editor.setReadOnly(true);
             if ($scope.my.connected) {
                 $scope.my.emit('dev.getConfig', $scope.selectedDevice);
             }
         }
         $scope.loadList = function () {
-            console.log($scope.my.connected);
+            console.debug($scope.my.connected);
             if ($scope.my.connected) {
                 $scope.my.emit('list.dev');
             }
